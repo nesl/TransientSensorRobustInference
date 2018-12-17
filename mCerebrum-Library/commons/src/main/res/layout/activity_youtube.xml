@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="@color/base_layer"
+    >
+
+  <!--  <include
+        android:id="@+id/layout_one_button"
+        layout="@layout/layout_one_button" />
+-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="@color/teal_header">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/textview_title"
+            android:text="Left Wrist"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/text_header_size"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_vdo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:background="@color/front_layer"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <com.google.android.youtube.player.YouTubePlayerView
+            android:id="@+id/youtube_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:id="@+id/layout_button">
+
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/button_back"
+            fancy:fb_defaultColor="@color/front_layer"
+            fancy:fb_focusColor="@color/focus_color"
+            fancy:fb_borderWidth="0dp"
+            fancy:fb_radius="10dp"
+            fancy:fb_borderColor="@color/tealsecondary"
+            fancy:fb_text="Back"
+            fancy:fb_fontIconResource="&#xf060;"
+            fancy:fb_textSize="@dimen/text_header_size"
+            fancy:fb_textColor="@color/text_red"/>
+
+    </LinearLayout>
+
+</LinearLayout>

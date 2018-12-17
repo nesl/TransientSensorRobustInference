@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "530240063849",
+    "firebase_url": "https://tsri-demo.firebaseio.com",
+    "project_id": "tsri-demo",
+    "storage_bucket": "tsri-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530240063849:android:9ecff0d925adf541",
+        "android_client_info": {
+          "package_name": "org.md2k.demoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530240063849-vhsev0p2m9ompfpi6t8ui6i956m3fetp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdTWZi6aP5URu8Oa46oS_Smmo7101Hx2Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

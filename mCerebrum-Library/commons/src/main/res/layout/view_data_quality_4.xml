@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/base_layer"
+        android:orientation="vertical">
+
+        <!--  data quality bar-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_header"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Sensor Data Quality"
+                android:textColor="@color/text_white" />
+        </LinearLayout>
+
+        <!--  data quality layout-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/base_layer"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <!--Sensor 1 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".25"
+                android:background="@color/base_layer"
+                android:orientation="vertical">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/button_data_quality_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    fancy:fb_defaultColor="@color/front_layer"
+                    fancy:fb_focusColor="@color/focus_color"
+                    fancy:fb_radius="4dp"
+                    fancy:fb_text=""
+                    fancy:fb_textColor="@color/text_white"
+                    fancy:fb_textSize="0sp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/textview_data_quality_title_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight=".33"
+                            android:text="Left wrist"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/text_button_caption" />
+
+                        <ImageView
+                            android:id="@+id/imageview_data_quality_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.33" />
+
+                        <TextView
+                            android:id="@+id/textview_data_quality_response_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight=".33"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/text_button_caption" />
+                    </LinearLayout>
+
+                </mehdi.sakout.fancybuttons.FancyButton>
+
+            </LinearLayout>
+            <!--Sensor 2 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".25"
+                android:background="@color/base_layer"
+                android:orientation="vertical">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/button_data_quality_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    fancy:fb_radius="4dp"
+                    fancy:fb_defaultColor="@color/front_layer"
+                    fancy:fb_focusColor="@color/focus_color"
+                    fancy:fb_text=""
+                    fancy:fb_textColor="@color/text_white"
+                    fancy:fb_textSize="0sp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/textview_data_quality_title_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight=".33"
+                            android:text="Left wrist"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/text_button_caption" />
+
+                        <ImageView
+                            android:id="@+id/imageview_data_quality_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.33" />
+
+                        <TextView
+                            android:id="@+id/textview_data_quality_response_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight=".33"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/text_button_caption" />
+                    </LinearLayout>
+
+                </mehdi.sakout.fancybuttons.FancyButton>
+
+            </LinearLayout>
+            <!--Sensor 3 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".25"
+                android:background="@color/base_layer"
+                android:orientation="vertical">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/button_data_quality_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    fancy:fb_radius="4dp"
+                    fancy:fb_defaultColor="@color/front_layer"
+                    fancy:fb_focusColor="@color/focus_color"
+                    fancy:fb_text=""
+                    fancy:fb_textColor="@color/text_white"
+                    fancy:fb_textSize="0sp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/textview_data_quality_title_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight=".33"
+                            android:text="Left wrist"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/text_button_caption" />
+
+                        <ImageView
+                            android:id="@+id/imageview_data_quality_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.33" />
+
+                        <TextView
+                            android:id="@+id/textview_data_quality_response_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight=".33"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/text_button_caption" />
+                    </LinearLayout>
+
+                </mehdi.sakout.fancybuttons.FancyButton>
+
+            </LinearLayout>
+            <!--Sensor 4 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".25"
+                android:background="@color/base_layer"
+                android:orientation="vertical">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/button_data_quality_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    fancy:fb_radius="4dp"
+                    fancy:fb_defaultColor="@color/front_layer"
+                    fancy:fb_focusColor="@color/focus_color"
+                    fancy:fb_text=""
+                    fancy:fb_textColor="@color/text_white"
+                    fancy:fb_textSize="0sp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/textview_data_quality_title_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight=".33"
+                            android:text="Left wrist"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/text_button_caption" />
+
+                        <ImageView
+                            android:id="@+id/imageview_data_quality_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.33" />
+
+                        <TextView
+                            android:id="@+id/textview_data_quality_response_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight=".33"
+                            android:textColor="@color/text_white"
+                            android:textSize="@dimen/text_button_caption" />
+                    </LinearLayout>
+
+                </mehdi.sakout.fancybuttons.FancyButton>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</merge>

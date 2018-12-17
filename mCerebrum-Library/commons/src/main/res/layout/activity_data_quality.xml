@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/base_layer"
+    android:weightSum="1">
+    <!-- app name bar-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="@color/teal_header">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/textview_title"
+            android:text="Left Wrist"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/text_header_size"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <!-- view chart -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.63"
+        android:background="@color/front_layer"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="If you are experiencing poor quality of data:"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/text_header_size"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/textview_content"
+            android:layout_height="wrap_content"
+            android:text=" 1) In the menu, tap Reset Application, wait 15 seconds and check again.\n\n 2) Restart the phone, wait one minute and check again.\n\n 3) Make sure the wrist sensor is charged and LED lights are on."
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/text_body_size"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="25dp"
+            android:padding="10dp"
+            android:gravity="left"/>
+    </LinearLayout>
+    <!-- graph and video buton-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button_graph"
+            android:layout_weight="0.5"
+            android:background="@color/front_layer"
+            android:layout_marginRight="5dp"
+            fancy:fb_defaultColor="@color/front_layer"
+            fancy:fb_focusColor="@color/focus_color"
+            fancy:fb_borderWidth="0dp"
+            fancy:fb_radius="10dp"
+            fancy:fb_borderColor="@color/teal_header"
+
+            fancy:fb_text=" "
+
+            fancy:fb_textColor="@color/text_white">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".3"
+                    android:text="Graph"
+                    android:layout_marginTop="5sp"
+                    android:textAppearance="@style/ButtonText"
+                    android:textAlignment="center" />
+
+                <ImageView
+                    android:id="@+id/imageviw_graph"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="top"
+                    android:layout_weight="0.7"
+                    android:src="@drawable/icon_graph"
+                    android:layout_margin="20dp"/>
+            </LinearLayout>
+        </mehdi.sakout.fancybuttons.FancyButton>
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button_video"
+            android:layout_weight="0.5"
+            android:background="@color/front_layer"
+            android:layout_marginLeft="5dp"
+            fancy:fb_defaultColor="@color/front_layer"
+            fancy:fb_focusColor="@color/focus_color"
+            fancy:fb_borderWidth="0dp"
+            fancy:fb_borderColor="@color/teal_header"
+            fancy:fb_radius="10dp"
+            fancy:fb_text=""
+            fancy:fb_textSize="@dimen/text_body_size"
+            fancy:fb_textColor="@color/text_white">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".3"
+                android:text="Tutorial"
+                android:layout_marginTop="5sp"
+                android:textAppearance="@style/ButtonText"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/imageviw_video"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="top"
+                android:layout_weight="0.7"
+                android:src="@drawable/icon_video"
+                android:layout_margin="20dp"/>
+        </LinearLayout>
+        </mehdi.sakout.fancybuttons.FancyButton>
+
+    </LinearLayout>
+    <!-- set goal button-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.08"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/button_close"
+            fancy:fb_defaultColor="@color/front_layer"
+            fancy:fb_focusColor="@color/focus_color"
+            fancy:fb_borderWidth="0dp"
+            fancy:fb_radius="10dp"
+            fancy:fb_borderColor="@color/teal_header"
+            fancy:fb_text="Close"
+            fancy:fb_fontIconResource="&#xf00d;"
+            fancy:fb_textSize="@dimen/text_header_size"
+            fancy:fb_textColor="@color/text_red"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/base_layer"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_header">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Pause and Resume Data Collection"
+                android:textColor="@color/text_white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/front_layer"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:weightSum="1">
+
+            <com.beardedhen.androidbootstrap.AwesomeTextView
+                android:id="@+id/textview_privacy_status"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_weight=".90"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:text="Resumed after 00 : 00 : 00"
+                android:textColor="@color/headerOrange"
+                android:textSize="20sp"
+                app:bootstrapBrand="success" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btn_pause_resume_data_collection"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_weight=".10"
+                android:gravity="center"
+                fancy:fb_defaultColor="@color/front_layer"
+                fancy:fb_focusColor="@color/focus_color"
+                fancy:fb_fontIconResource="&#xf04b;"
+                fancy:fb_radius="64dp"
+                fancy:fb_textColor="@color/text_white"
+                fancy:fb_textSize="0sp" />
+        </LinearLayout>
+    </LinearLayout>
+</merge>

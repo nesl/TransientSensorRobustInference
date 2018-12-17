@@ -1,0 +1,25 @@
+<resources>
+
+    <!--Final -->
+    <dimen name="text_header_size">18sp</dimen>
+    <dimen name="text_body_size">13sp</dimen>
+    <dimen name="text_button_caption">12sp</dimen>
+
+    <!--Final -->
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="micro_padding">2dp</dimen>
+    <dimen name="study_margin">10dp</dimen>
+    <dimen name="study_button_sizew">200dp</dimen>
+    <dimen name="study_button_sizeh">160dp</dimen>
+    <dimen name="privacy_report_button_w">200dp</dimen>
+    <dimen name="privacy_report_button_h">120dp</dimen>
+    <dimen name="study_dq_size">100dp</dimen>
+    <dimen name="icon_width">40dp</dimen>
+    <dimen name="icon_height">80dp</dimen>
+    <dimen name="icon_dq_width">20dp</dimen>
+    <dimen name="icon_dq_height">40dp</dimen>
+    <dimen name="study_btn_font_size">14sp</dimen>
+    <dimen name="dq_footer_size">10sp</dimen>
+</resources>

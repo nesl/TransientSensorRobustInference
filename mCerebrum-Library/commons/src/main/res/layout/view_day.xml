@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/base_layer"
+        android:orientation="vertical">
+
+        <!--  bar-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_header"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Day"
+                android:textColor="@color/text_white" />
+        </LinearLayout>
+
+        <!--  button list layout-->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_layer"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/button_start"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.5"
+        android:layout_margin="10dp"
+        fancy:fb_defaultColor="@color/front_layer"
+        fancy:fb_focusColor="@color/focus_color"
+        fancy:fb_iconPosition="bottom"
+        fancy:fb_fontIconResource="&#xf185;"
+        fancy:fb_fontIconSize="20dp"
+        fancy:fb_text="Start Day\n"
+        fancy:fb_textSize="@dimen/text_body_size"
+        fancy:fb_radius="7dp"
+        fancy:fb_textColor="@color/text_white"/>
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/button_end"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.5"
+        android:layout_margin="10dp"
+        fancy:fb_defaultColor="@color/front_layer"
+        fancy:fb_focusColor="@color/focus_color"
+        fancy:fb_iconPosition="bottom"
+        fancy:fb_fontIconResource="&#xf186;"
+        fancy:fb_fontIconSize="20dp"
+        fancy:fb_text="End Day\n"
+        fancy:fb_textSize="@dimen/text_body_size"
+        fancy:fb_radius="7dp"
+        fancy:fb_textColor="@color/text_white"/>
+
+
+</LinearLayout>
+    </LinearLayout>
+</merge>
