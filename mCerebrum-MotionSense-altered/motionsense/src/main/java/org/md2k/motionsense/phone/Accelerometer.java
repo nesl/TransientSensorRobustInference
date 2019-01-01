@@ -40,6 +40,9 @@ import org.md2k.motionsense.ActivityMain;
 import org.md2k.motionsense.exportRunnable;
 import org.md2k.motionsense.exporter;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -81,17 +84,20 @@ public class Accelerometer implements SensorEventListener {
     private long dataCount = 0;
     private long entryDelay = 9; //9 milliseconds have to pass between every sample
 
+    //Queue for writing to a file
+    List<exportRunnable> writeQueue;
+
+
     /**
      * Constructor
      *
      * @param context Android context
      */
-    public Accelerometer(Context context, exporter exp, ExecutorService ex) {
+    public Accelerometer(Context context, List<exportRunnable> wQueue) {
         //super(context, DataSourceType.ACCELEROMETER);
         frequency = SENSOR_DELAY_FASTEST;
         ctx = context;
-        this.exp = exp;
-        executor = ex;
+        writeQueue = wQueue;
     }
 
     /**
@@ -101,7 +107,14 @@ public class Accelerometer implements SensorEventListener {
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
-        long curTime = System.currentTimeMillis();//DateTime.getDateTime();
+        //long curTime = System.currentTimeMillis();//DateTime.getDateTime();
+
+        //Why not divide by 1000000 directly?  http://fixermark.blogspot.com/2014/06/quirkiness-of-android-sensor-library.html
+        long curTimeNanos = event.timestamp;
+        long curTime = System.currentTimeMillis()
+                + (curTimeNanos - System.nanoTime()) / 1000000L;
+
+        //Log.d(TAG, "TIME: " + Long.toString(System.currentTimeMillis()) + " - " + Long.toString(curTime) + " - " + Long.toString(curTime2));
 
         //If sufficient time has passed since the last append to the CSV file, we can do another
         // This is just for throttling the amount of data sampled - some phones sample at extremely
@@ -123,9 +136,10 @@ public class Accelerometer implements SensorEventListener {
                 Log.d(TAG, message);
             }
 
-            //Run the thread for exporting data
-            Runnable insertHandler = new exportRunnable("Phone-ACC", message, exp);
-            executor.execute(insertHandler);
+            //Append the data to a queue for exporting
+            exportRunnable dataToQueue = new exportRunnable("Phone-ACC", message);
+            writeQueue.add(dataToQueue);
+
             dataCount += 1;
         }
     }

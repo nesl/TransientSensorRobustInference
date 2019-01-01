@@ -49,7 +49,7 @@ public class MyMCerebrumInit extends MCerebrumInfo {
     @Override
     public void update(final Context context) {
         MCerebrum.setReportActivity(context, ActivityPlotChoice.class);
-        MCerebrum.setBackgroundService(context, ServiceMotionSense.class);
+        //MCerebrum.setBackgroundService(context, ServiceMotionSense.class);
         MCerebrum.setConfigureActivity(context, ActivitySettings.class);
         MCerebrum.setPermissionActivity(context, ActivityPermission.class);
         MCerebrum.setConfigured(context, ConfigurationManager.isConfigured());

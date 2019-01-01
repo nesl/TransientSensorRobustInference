@@ -37,6 +37,7 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -121,6 +122,7 @@ public class ActivityMain extends AppCompatActivity {
      */
     void readIntent() {
         if (getIntent().getExtras() != null) {
+            Log.d("abc", "\nINTENT RECEIVED: " + Integer.toString(operation) + "\n");
             operation = getIntent().getExtras().getInt(OPERATION, 0);
         } else operation = 0;
     }
@@ -431,6 +433,7 @@ public class ActivityMain extends AppCompatActivity {
      * </p>
      */
     void load() {
+        Log.d("abc", "\n Loading!!!!!! " + Integer.toString(operation) + "\n");
         Intent intent;
         switch (operation) {
             case OPERATION_RUN:

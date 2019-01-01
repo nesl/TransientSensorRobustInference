@@ -3,25 +3,23 @@ package org.md2k.motionsense;
 
 /*
 
-    Class for threads that export data to a csv
+    Class for a data object
     -  Using the exporter class, we export the string message to a specific folder
 
  */
 
-public class exportRunnable implements Runnable {
+public class exportRunnable {
 
     final String foldername;
     final String message;
 
-    exporter exp;
 
-    public exportRunnable(String foldername, String message, exporter exp) {
+    public exportRunnable(String foldername, String message) {
         this.foldername = foldername;
         this.message = message;
-        this.exp = exp;
     }
 
-    public void run() {
+    /*public void run() {
         exp.exportData(foldername, message);
-    }
+    }*/
 }

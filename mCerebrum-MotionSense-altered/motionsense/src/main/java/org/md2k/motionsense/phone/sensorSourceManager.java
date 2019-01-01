@@ -2,9 +2,12 @@ package org.md2k.motionsense.phone;
 
 import android.content.Context;
 
+import org.md2k.motionsense.exportRunnable;
 import org.md2k.motionsense.exporter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,13 +25,16 @@ public class sensorSourceManager {
 
     ExecutorService executor;
 
-    public sensorSourceManager(Context context, exporter exp) {
+    List<exportRunnable> writeQueue;
+
+    public sensorSourceManager(Context context, exporter exp, List<exportRunnable> wQueue) {
         ctx = context;
 
+        writeQueue = wQueue;
         executor = Executors.newSingleThreadExecutor();
 
-        accSensor = new Accelerometer(ctx, exp, executor);
-        gyroSensor = new Gyroscope(ctx, exp, executor);
+        accSensor = new Accelerometer(ctx, writeQueue);
+        gyroSensor = new Gyroscope(ctx, writeQueue);
 
     }
 

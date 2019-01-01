@@ -1,4 +1,5 @@
 package org.md2k.motionsense;
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
@@ -34,12 +35,16 @@ public class exporter {
     private long last_time_updated = 0;
     private long update_delay_millis = 10000; //Every 10 seconds we update the NTP time
 
-    public exporter() {
+    //Service Context - used for sending notifications
+    private Context ctx;
+
+    public exporter(Context ctx) {
+        this.ctx = ctx;
         mCurrentDateString = getCurrentDate();
         Log.d(TAG, "Setting current date: " + mCurrentDateString);
 
         //Get the ntp update thread so we can add the clock offset to each entry
-        ntpThread = new ntpUpdateThread();
+        ntpThread = new ntpUpdateThread(this.ctx);
         last_time_updated = System.currentTimeMillis();
     }
 

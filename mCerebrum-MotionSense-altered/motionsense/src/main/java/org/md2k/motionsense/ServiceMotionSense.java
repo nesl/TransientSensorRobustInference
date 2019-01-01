@@ -63,7 +63,9 @@ import org.md2k.motionsense.permission.Permission;
 import org.md2k.motionsense.phone.sensorSourceManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -104,8 +106,9 @@ public class ServiceMotionSense extends Service {
         Check lines 240 for the code that I added.  Or you can ctrl+f for ACCELEROMETER
      */
     sensorSourceManager ssm;
-    exporter exp = new exporter();
-    ExecutorService executor;
+    exporter exp;
+    List<exportRunnable> writeQueue;  //This is created from a synchronized list
+    Thread writeThread;
 
     /**
      * Logs the creation of the service, calls <code>loadListener()</code>, and subscribes an
@@ -116,15 +119,27 @@ public class ServiceMotionSense extends Service {
         super.onCreate();
         Logger.d("Service: onCreate()...");
         summary = new SparseArray<>();
+
+        writeQueue = Collections.synchronizedList(new ArrayList<exportRunnable>());
+        exp  = new exporter(this);
+
         ErrorNotify.removeNotification(ServiceMotionSense.this);
         loadListener();
 
-        ssm = new sensorSourceManager(this, exp);
+        ssm = new sensorSourceManager(this, exp, writeQueue);
         ssm.registerListeners();
 
-        //startTime = System.currentTimeMillis();
 
-        executor = Executors.newSingleThreadExecutor();
+        //Run a background thread for writing to CSV files
+        writeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    writeToFile();
+                }
+            }
+        });
+        writeThread.start();
 
         subscription = Observable.just(true)
                 .map(aBoolean -> {
@@ -244,13 +259,15 @@ public class ServiceMotionSense extends Service {
 
                                 if(data.get(i).getSensor().getDataSourceType().equals("ACCELEROMETER")) {
                                     String message = data.get(i).getDoubleArrayData();
-                                    Runnable insertHandler = new exportRunnable(data.get(i).getSensor().getDeviceId() + "-ACC", message, exp);
-                                    executor.execute(insertHandler);
+                                    exportRunnable dataToQueue = new exportRunnable(data.get(i).getSensor().getDeviceId() + "-ACC", message);
+                                    writeQueue.add(dataToQueue);
+
                                 }
                                 else if(data.get(i).getSensor().getDataSourceType().equals("GYROSCOPE")) {
                                     String message = data.get(i).getDoubleArrayData();
-                                    Runnable insertHandler = new exportRunnable(data.get(i).getSensor().getDeviceId() + "-GYRO", message, exp);
-                                    executor.execute(insertHandler);
+                                    exportRunnable dataToQueue = new exportRunnable(data.get(i).getSensor().getDeviceId() + "-GYRO", message);
+                                    writeQueue.add(dataToQueue);
+
                                 }
                             }
                             if (dataTemp.size() == 0) continue;
@@ -413,6 +430,11 @@ public class ServiceMotionSense extends Service {
 
         ssm.destroy();  //Stop the Phone Sensor Manager
 
+        //Interrupt the write thread and force the rest of the queue to be written to file
+        writeThread.interrupt();
+        completeWriting();
+
+
         if (ConfigurationManager.isForegroundApp())
             stopForegroundService();
         unsubscribe();
@@ -423,6 +445,32 @@ public class ServiceMotionSense extends Service {
         super.onDestroy();
     }
 
+    //Write an exportRunnable object to the CSV
+    private void writeToFile() {
+        if(!writeQueue.isEmpty()) {
+
+            //Get the first object in the writeQueue
+            exportRunnable toWrite = writeQueue.get(0);
+            //Remove the first object from the queue
+            writeQueue.remove(0);
+            //Export the data to a CSV
+            exp.exportData(toWrite.foldername, toWrite.message);
+        }
+    }
+
+    //Write the rest of the writeQueue to file - this is called before this service is destroyed
+    private void completeWriting() {
+        Log.d("abcde", " Completing Writes to file!");
+        synchronized (writeQueue) {
+            Iterator i = writeQueue.iterator(); // Must be in synchronized block
+            while (i.hasNext()) {
+                exportRunnable toWrite = (exportRunnable) i.next();
+                exp.exportData(toWrite.foldername, toWrite.message);
+            }
+            writeQueue.clear();
+        }
+
+    }
 
     /*public void printQuery (ArrayList<DataType> query) {
         Log.d("abcde", "Length of query: " + query.size());

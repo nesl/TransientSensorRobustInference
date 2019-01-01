@@ -71,6 +71,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true;
     }
+    implementation "com.android.support:support-compat:25.3.1"
     implementation 'commons-net:commons-net:3.6'
     compile "com.polidea.rxandroidble:rxandroidble:1.4.3"
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
