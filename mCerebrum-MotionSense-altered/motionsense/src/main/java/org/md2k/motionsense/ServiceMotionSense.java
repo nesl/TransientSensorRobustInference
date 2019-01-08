@@ -64,6 +64,7 @@ import org.md2k.motionsense.phone.sensorSourceManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -103,12 +104,43 @@ public class ServiceMotionSense extends Service {
         - exp is the class for exporting a string to a CSV file
         - executor is for executing new threads (specifically I used it for exporting data)
 
-        Check lines 240 for the code that I added.  Or you can ctrl+f for ACCELEROMETER
+        To find the code that I added, ctrl+f for ACCELEROMETER
      */
     sensorSourceManager ssm;
     exporter exp;
     List<exportRunnable> writeQueue;  //This is created from a synchronized list
     Thread writeThread;
+    frequencyTester ft = new frequencyTester("WristWatch Acc", 0, 1000);
+    HashMap<String, Long> deviceInsertedTimestamps = new HashMap<String, Long>();
+
+
+    //Check if should insert this data - high frequency data from MotionSense HRV sometimes arrives multiple times
+    // This function checks if we are recieving data that is old; i.e. the timestamp of the recieved data
+    // is older than the most recent timestamp
+    // Surprisingly, even though this misses the case where we could miss old data that wasn't recorded already,
+    //  we still get around 25Hz of data for each modality
+    public boolean isInsertAllowed(String key, long timestamp) {
+        boolean insertAllowed = false;
+
+        //If the key is in the current hash map
+        if(deviceInsertedTimestamps.containsKey(key)) {
+            long lastTimestamp = deviceInsertedTimestamps.get(key);
+
+            //Check if we should insert or not
+            if(timestamp > lastTimestamp) {
+                insertAllowed = true;
+                deviceInsertedTimestamps.put(key, timestamp);
+            }
+
+        }
+        else {  //Key not found - add to hashmap
+            deviceInsertedTimestamps.put(key, timestamp);
+        }
+
+        return insertAllowed;
+
+    }
+
 
     /**
      * Logs the creation of the service, calls <code>loadListener()</code>, and subscribes an
@@ -254,19 +286,29 @@ public class ServiceMotionSense extends Service {
                                 /*
                                        ADDED CODE:
                                        - Upon receiving data, check if data source type matches what we want (ACC & Gyro)
+                                       - If this data is in the correct order - sometimes we get redundant data
                                        - Store the data using another thread so we don't block new incoming data
                                  */
 
                                 if(data.get(i).getSensor().getDataSourceType().equals("ACCELEROMETER")) {
                                     String message = data.get(i).getDoubleArrayData();
-                                    exportRunnable dataToQueue = new exportRunnable(data.get(i).getSensor().getDeviceId() + "-ACC", message);
-                                    writeQueue.add(dataToQueue);
+                                    String foldername = data.get(i).getSensor().getDeviceId() + "-ACC";
+                                    exportRunnable dataToQueue = new exportRunnable(foldername, message);
+
+                                    if(isInsertAllowed(foldername, data.get(i).getDataType().getDateTime())) {
+                                        writeQueue.add(dataToQueue);
+                                    }
+
 
                                 }
                                 else if(data.get(i).getSensor().getDataSourceType().equals("GYROSCOPE")) {
                                     String message = data.get(i).getDoubleArrayData();
-                                    exportRunnable dataToQueue = new exportRunnable(data.get(i).getSensor().getDeviceId() + "-GYRO", message);
-                                    writeQueue.add(dataToQueue);
+                                    String foldername = data.get(i).getSensor().getDeviceId() + "-GYRO";
+                                    exportRunnable dataToQueue = new exportRunnable(foldername, message);
+
+                                    if(isInsertAllowed(foldername, data.get(i).getDataType().getDateTime())) {
+                                        writeQueue.add(dataToQueue);
+                                    }
 
                                 }
                             }
@@ -429,10 +471,9 @@ public class ServiceMotionSense extends Service {
         //endTime = System.currentTimeMillis();
 
         ssm.destroy();  //Stop the Phone Sensor Manager
-
         //Interrupt the write thread and force the rest of the queue to be written to file
         writeThread.interrupt();
-        completeWriting();
+        //completeWriting();
 
 
         if (ConfigurationManager.isForegroundApp())
@@ -445,16 +486,30 @@ public class ServiceMotionSense extends Service {
         super.onDestroy();
     }
 
+    long lastOutputTime = 0;
+    long delay = 1000;
+    long writeCount = 0;
     //Write an exportRunnable object to the CSV
     private void writeToFile() {
         if(!writeQueue.isEmpty()) {
+
+            if(System.currentTimeMillis() > lastOutputTime + delay) {
+
+                lastOutputTime = System.currentTimeMillis();
+                Log.d("abcde", "Current Queue Size: " + Long.toString(writeQueue.size()));
+                Log.d("abcde", "Writes: " + Long.toString(writeCount));
+
+                writeCount = 0;
+            }
 
             //Get the first object in the writeQueue
             exportRunnable toWrite = writeQueue.get(0);
             //Remove the first object from the queue
             writeQueue.remove(0);
-            //Export the data to a CSV
-            exp.exportData(toWrite.foldername, toWrite.message);
+            //Buffer the data for writing to a CSV
+            exp.bufferData(toWrite.foldername, toWrite.message);
+
+            writeCount++;
         }
     }
 

@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /*
@@ -20,6 +22,27 @@ import java.util.Date;
 
  */
 public class exporter {
+
+    public class dataBuffer {
+        String output = "";
+        String filename = "";
+        int bufferCount = 0;
+        dataBuffer(String filename, String message) {
+            this.filename = filename;
+            this.output = message;
+        }
+
+        void addToBuffer(String message) {
+            output += "\n" + message;
+            bufferCount++;
+
+        }
+        void clearBuffer() {
+            output = "";
+            bufferCount = 0;
+        }
+
+    }
 
     final String TAG = "DBG-exporter";
 
@@ -38,6 +61,9 @@ public class exporter {
     //Service Context - used for sending notifications
     private Context ctx;
 
+    //set up dataBuffer - this is so we can do writing in batches instead of line by line
+    private List<dataBuffer> bufferList;
+
     public exporter(Context ctx) {
         this.ctx = ctx;
         mCurrentDateString = getCurrentDate();
@@ -46,6 +72,8 @@ public class exporter {
         //Get the ntp update thread so we can add the clock offset to each entry
         ntpThread = new ntpUpdateThread(this.ctx);
         last_time_updated = System.currentTimeMillis();
+
+        bufferList = new ArrayList<dataBuffer>();
     }
 
     //Get the current date for creating the file
@@ -66,6 +94,41 @@ public class exporter {
     }*/
 
 
+    //Buffer data to be exported later - basically, instead of writing line by line,
+    // write a large number of lines at once occasionally
+    public void bufferData(String folderName, String message) {
+
+        //Update the NTP time if sufficient time has passed
+        if(System.currentTimeMillis() > last_time_updated + update_delay_millis) {
+            last_time_updated = System.currentTimeMillis();
+            ntpThread.getNTPTime();
+        }
+
+        boolean foundData = false;
+
+        //For each databuffer, we check if it matches the current folder
+        // If it does, we add the message to its buffer
+        for (dataBuffer d : bufferList) {
+            if (d.filename.equals(folderName)) {
+                foundData = true;
+                d.addToBuffer(message + "," + Long.toString(ntpThread.getOffset()));
+
+                //If we have greater than 30 items in the buffer, we export the items
+                if(d.bufferCount > 30) {
+                    exportData(d.filename, d.output);
+                    d.clearBuffer();
+                }
+            }
+        }
+
+        //If this folder is not already in the list of databuffers, we add it.
+        if(!foundData) {
+            dataBuffer d = new dataBuffer(folderName, message + "," + Long.toString(ntpThread.getOffset()));
+            bufferList.add(d);
+        }
+    }
+
+
     //Exports a set of values to a CSV file
     /*
           Params:  String folderName - directory name of the folder (i.e. Phone-ACC)
@@ -73,12 +136,6 @@ public class exporter {
                                     Usually the message will be timestamp, x, y, z
      */
     public boolean exportData(String folderName, String message) {
-
-        //Update the NTP time if sufficient time has passed
-        if(System.currentTimeMillis() > last_time_updated + update_delay_millis) {
-            last_time_updated = System.currentTimeMillis();
-            ntpThread.getNTPTime();
-        }
 
 
         String state = Environment.getExternalStorageState();
@@ -104,7 +161,7 @@ public class exporter {
                 printWriter = new PrintWriter(new FileWriter(file, true));
 
                 //Append the data to the file
-                printWriter.println(message + "," + Long.toString(ntpThread.getOffset()));
+                printWriter.print(message);
                 //Log.d(TAG, "Successfully wrote to " + folderName);
             }
 
