@@ -29,7 +29,7 @@ public class exporter {
         int bufferCount = 0;
         dataBuffer(String filename, String message) {
             this.filename = filename;
-            this.output = message;
+            this.output = "\n" + message;
         }
 
         void addToBuffer(String message) {
@@ -61,6 +61,9 @@ public class exporter {
     //Service Context - used for sending notifications
     private Context ctx;
 
+    // This is the session number - basically, every time the user clicks start, a new session begins
+    private int session_number = -1;
+
     //set up dataBuffer - this is so we can do writing in batches instead of line by line
     private List<dataBuffer> bufferList;
 
@@ -80,7 +83,7 @@ public class exporter {
     private String getCurrentDate() {
 
         String currentDateString = "";
-        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         currentDateString = formatter.format(new Date(System.currentTimeMillis()));
         return currentDateString;
     }
@@ -129,6 +132,8 @@ public class exporter {
     }
 
 
+
+
     //Exports a set of values to a CSV file
     /*
           Params:  String folderName - directory name of the folder (i.e. Phone-ACC)
@@ -145,7 +150,7 @@ public class exporter {
         } else {
             //We use the Documents directory for saving our .csv file.
             File exportRoot = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            File exportDir = new File(exportRoot, "MD2KHF/" + folderName);
+            File exportDir = new File(exportRoot, "MD2KHF/" + folderName + "/" + mCurrentDateString);
             if (!exportDir.exists()) {
                 exportDir.mkdirs();
             }
@@ -154,7 +159,16 @@ public class exporter {
             PrintWriter printWriter = null;
             try
             {
-                file = new File(exportDir, mCurrentDateString + ".csv");
+                //If we don't have a session number, we find what session we are on.
+                //If the current session number is 0 (i.e. we haven't started the sessions for this exporter)
+                //  Then we check the directory to see if we already have an active session for today
+                //  We use the number of files in the directory to determine what session we are on.
+                if(session_number == -1) {
+                    if(exportDir.listFiles() != null) {
+                        session_number = exportDir.listFiles().length;
+                    }
+                }
+                file = new File(exportDir, Integer.toString(session_number) +  ".csv");
                 file.createNewFile();
 
                 //This is set in append mode - if the file already exists we append this data to it

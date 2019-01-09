@@ -61,7 +61,9 @@ import org.md2k.motionsense.permission.Permission;
 import org.md2k.motionsense.plot.ActivityPlotChoice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -96,6 +98,8 @@ public class ActivityMain extends AppCompatActivity {
     public static final int DELAY_MILLIS = 1000;
 
     int operation;
+
+    List<String> phoneSources = Arrays.asList("Phone-ACC", "Phone-GYRO");
 
     /**
      * Calls <code>super</code>, <code>loadCrashlytics()</code>, <code>readIntent()</code>, and
@@ -153,6 +157,7 @@ public class ActivityMain extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Button buttonService = (Button) findViewById(R.id.button_app_status);
         prepareTable();
+        addPhoneUI(phoneSources);
         buttonService.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ServiceMotionSense.class);
             if (AppInfo.isServiceRunning(getBaseContext(), ServiceMotionSense.class.getName())) {
@@ -199,7 +204,16 @@ public class ActivityMain extends AppCompatActivity {
          */
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateTable(intent);
+
+            if(intent.getStringExtra("phone-src") != null) {
+                Log.d("abcde", "Updating Phone Table");
+                updatePhoneTable(intent);
+            }
+            else {
+                Log.d("abcde", "Updating MotionSense Table");
+                updateTable(intent);
+            }
+
         }
     };
 
@@ -293,6 +307,49 @@ public class ActivityMain extends AppCompatActivity {
             ll.addView(row);
         }
     }
+
+    //Creates Extra UI for the phone sensor
+    private void addPhoneUI(List<String> phoneSources) {
+        HashMap<String, Integer> phoneData = new HashMap<String, Integer>();
+
+        for(String name : phoneSources) {
+            phoneData.put(name, 0);
+        }
+
+        TableLayout ll = (TableLayout) findViewById(R.id.tableLayout);
+        ll.addView(createDefaultRow());
+
+        for(String key : phoneData.keySet()) {
+            TableRow row = new TableRow(this);
+            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+            row.setLayoutParams(lp);
+            TextView tvSensor = new TextView(this);
+            tvSensor.setPadding(5, 0, 0, 0);
+            tvSensor.setText(key);
+            TextView tvCount = new TextView(this);
+            tvCount.setText("0");
+            TextView tvFreq = new TextView(this);
+            tvFreq.setText("0");
+            hashMapData.put(key + "_freq", tvFreq);
+            row.addView(tvSensor);
+            row.addView(tvCount);
+            row.addView(tvFreq);
+            row.setBackgroundResource(R.drawable.border);
+            ll.addView(row);
+        }
+    }
+
+    //Updates the widget for just phone data
+    private void updatePhoneTable(Intent intent) {
+
+        String sourceName = intent.getStringExtra("phone-src");
+        String freq = intent.getStringExtra("phone-freq");
+
+        if(hashMapData.containsKey(sourceName + "_freq")) {
+            hashMapData.get(sourceName + "_freq").setText(freq);
+        }
+    }
+
 
     /**
      * Updates the table widget with refreshed data from the sensors.

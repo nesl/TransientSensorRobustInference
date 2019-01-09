@@ -28,10 +28,12 @@ package org.md2k.motionsense.phone;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.md2k.datakitapi.exception.DataKitException;
@@ -56,6 +58,8 @@ public class Gyroscope implements SensorEventListener {
     private static final String SENSOR_DELAY_UI = "16";
     private static final String SENSOR_DELAY_GAME = "50";
     private static final String SENSOR_DELAY_FASTEST = "100";
+
+    public static final String INTENT_DATA = "INTENT_DATA";
 
 
     private static final String TAG = "DBG-GYRO";
@@ -132,6 +136,12 @@ public class Gyroscope implements SensorEventListener {
             if ((curTime - lastFrequencyOutput) > filterDataMinTime) {
                 lastFrequencyOutput = curTime;
                 Log.d(TAG, " Sampling at " + Long.toString(dataCount) + " samples");
+
+                Intent intent = new Intent(INTENT_DATA);
+                intent.putExtra("phone-src", "Phone-GYRO");
+                intent.putExtra("phone-freq", Long.toString(dataCount));
+                LocalBroadcastManager.getInstance(ctx).sendBroadcast(intent);
+
                 dataCount = 0;
                 Log.d(TAG, message);
             }
