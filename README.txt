@@ -16,3 +16,5 @@ CNN Training consists of python code that I used to train the CNN classifier usi
  - Added direct data export to CSV for all data (exporter.java)
  - Added NTP time updating when exporting data (ntpUpdateThread.java)
 
+## TODO:
+ - It looks like the Phone sensor doesn't take in the correct time?  Outputted times in milliseconds are off by several hours.
